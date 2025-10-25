@@ -2,6 +2,13 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define MAX_CITIES 30
+#define CITY_NAME_LENGTH 50
+
+char cities[MAX_CITIES][CITY_NAME_LENGTH];
+int cityCount = 0;
+int distances[MAX_CITIES][MAX_CITIES];
+
 void manageCities();
 void manageDistances();
 void handleDeliveryRequest();
@@ -88,6 +95,34 @@ void manageCities()
             printf("Invalid choice! Please try again.\n");
         }
     } while (choice != 5);
+}
+
+void addCity()
+{
+    if (cityCount >= MAX_CITIES)
+    {
+        printf("Maximum city limit reached\n");
+        return;
+    }
+
+    char newCity[CITY_NAME_LENGTH];
+    printf("Enter city name: ");
+    getchar();
+    fgets(newCity, CITY_NAME_LENGTH, stdin);
+    newCity[strcspn(newCity, "\n")] = 0;
+
+    for (int i = 0; i < cityCount; i++)
+    {
+        if (strcmp(cities[i], newCity) == 0)
+        {
+            printf("This city already exists\n");
+            return;
+        }
+    }
+
+    strcpy(cities[cityCount], newCity);
+    cityCount++;
+    printf("%s city added successfully!\n", newCity);
 }
 
 
