@@ -18,6 +18,10 @@ float vehicleRate[3] = {30.0, 40.0, 80.0};
 float vehicleSpeed[3] = {60.0, 50.0, 45.0};
 float vehicleFuelEfficiency[3] = {12.0, 6.0, 4.0};
 
+int minDistance = 0;
+int path[MAX_CITIES];
+int pathLen = 0;
+
 int deliveryCount = 0;
 int deliverySource[MAX_DELIVERIES];
 int deliveryDestination[MAX_DELIVERIES];
@@ -43,6 +47,7 @@ void calculateDeliveryCost(int source, int destination, int weight, int vehicleT
 void saveDeliveryRecord(int source, int destination, int weight, int vehicleType, float distance, float delivCost, float time, float customerCharge, float profit);
 void displayDeliveryEstimate(int source, int destination, int weight, int vehicleType, float distance, float deliveryCost,
                              float fuelUsed, float fuelCost, float totalCost, float profit, float customerCharge, float time);
+void findShortestPath(int source, int destination);
 
 int main()
 {
@@ -435,6 +440,7 @@ void handleDeliveryRequest()
 
 void calculateDeliveryCost(int source, int destination, int weight, int vehicleType)
 {
+    findShortestPath(source, destination);
 
     if (minDistance == 0 || minDistance == INFINITY_VALUE)
     {
@@ -500,4 +506,70 @@ void displayDeliveryEstimate(int source, int destination, int weight, int vehicl
     printf(" Customer Charge:    %.2f LKR\n", customerCharge);
     printf(" Estimated Time:     %.2f hours\n", time);
     printf("\n=====================================================\n");
+}
+
+void findShortestPath(int source, int destination)
+{
+    if (distances[source][destination] > 0)
+    {
+        minDistance = distances[source][destination];
+        path[0] = source;
+        path[1] = destination;
+        pathLen = 2;
+    }
+    else
+    {
+        minDistance = INFINITY_VALUE;
+        pathLen = 0;
+    }
+
+    for (int intermediate = 0; intermediate < cityCount; intermediate++)
+    {
+        if (intermediate == source || intermediate == destination)
+        {
+            continue;
+        }
+
+        if (distances[source][intermediate] > 0 && distances[intermediate][destination] > 0)
+        {
+            int totalDistance = distances[source][intermediate] + distances[intermediate][destination];
+            if (totalDistance < minDistance)
+            {
+                minDistance = totalDistance;
+                path[0] = source;
+                path[1] = intermediate;
+                path[2] = destination;
+                pathLen = 3;
+            }
+        }
+    }
+
+    for (int i = 0; i < cityCount; i++)
+    {
+        if (i == source || i == destination)
+        {
+            continue;
+        }
+        for (int j = 0; j < cityCount; j++)
+        {
+            if (j == source || j == destination || j == i)
+            {
+                continue;
+            }
+
+            if (distances[source][i] > 0 && distances[i][j] > 0 && distances[j][destination] > 0)
+            {
+                int totalDistance = distances[source][i] + distances[i][j] + distances[j][destination];
+                if (totalDistance < minDistance)
+                {
+                    minDistance = totalDistance;
+                    path[0] = source;
+                    path[1] = i;
+                    path[2] = j;
+                    path[3] = destination;
+                    pathLen = 4;
+                }
+            }
+        }
+    }
 }
