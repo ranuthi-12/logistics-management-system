@@ -4,6 +4,8 @@
 
 #define MAX_CITIES 30
 #define CITY_NAME_LENGTH 50
+#define INFINITY_VALUE 999999
+#define FUEL_PRICE 310.0
 
 char cities[MAX_CITIES][CITY_NAME_LENGTH];
 int cityCount = 0;
@@ -15,6 +17,17 @@ float vehicleRate[3] = {30.0, 40.0, 80.0};
 float vehicleSpeed[3] = {60.0, 50.0, 45.0};
 float vehicleFuelEfficiency[3] = {12.0, 6.0, 4.0};
 
+int deliveryCount = 0;
+int deliverySource[MAX_DELIVERIES];
+int deliveryDestination[MAX_DELIVERIES];
+int deliveryWeight[MAX_DELIVERIES];
+int deliveryVehicle[MAX_DELIVERIES];
+float deliveryDistance[MAX_DELIVERIES];
+float deliveryCost[MAX_DELIVERIES];
+float deliveryTime[MAX_DELIVERIES];
+float deliveryRevenue[MAX_DELIVERIES];
+float deliveryProfit[MAX_DELIVERIES];
+
 void manageCities();
 void manageDistances();
 void handleDeliveryRequest();
@@ -25,6 +38,7 @@ void renameCity();
 void displayCities();
 void editDistance();
 void displayDistanceTable();
+void calculateDeliveryCost(int source, int destination, int weight, int vehicleType);
 
 int main()
 {
@@ -411,6 +425,30 @@ void handleDeliveryRequest()
         printf("Maximum capacity for %s: %d kg\n", vehicleNames[vehicleType], vehicleCapacity[vehicleType]);
         return;
     }
+    calculateDeliveryCost(source, destination, weight, vehicleType);
 
+}
+
+void calculateDeliveryCost(int source, int destination, int weight, int vehicleType)
+{
+
+    if (minDistance == 0 || minDistance == INFINITY_VALUE)
+    {
+        printf("No route available between selected cities!\n");
+        return;
+    }
+
+    float distance = (float)minDistance;
+    float rate = vehicleRate[vehicleType];
+    float speed = vehicleSpeed[vehicleType];
+    float efficiency = vehicleFuelEfficiency[vehicleType];
+
+    float deliveryCost = distance * rate * (1.0 + (weight / 10000.0));
+    float fuelUsed = distance / efficiency;
+    float fuelCost = fuelUsed * FUEL_PRICE;
+    float totalCost = deliveryCost + fuelCost;
+    float profit = deliveryCost * 0.25;
+    float customerCharge = totalCost + profit;
+    float time = distance / speed;
 }
 
