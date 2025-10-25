@@ -18,6 +18,7 @@ void removeCity();
 void renameCity();
 void displayCities();
 void editDistance();
+void displayDistanceTable();
 
 int main()
 {
@@ -305,4 +306,42 @@ void editDistance()
     distances[city2][city1] = distance;
 
     printf("Distance set successfully!\n");
+}
+
+void displayDistanceTable()
+{
+    if (cityCount == 0)
+    {
+        printf("No cities available!\n");
+        return;
+    }
+
+    printf("\n=======================================\n");
+    printf("          Distances between 2 cities     \n");
+    printf("\n=======================================\n");
+
+    printf("%15s", " ");
+    for (int i = 0; i < cityCount; i++)
+    {
+        printf("%-15s", cities[i]);
+    }
+    printf("\n");
+    printf("---------------------------------------------------------------------------------------------\n");
+
+    for (int i = 0; i < cityCount; i++)
+    {
+        printf("%-15s", cities[i]);
+        for (int j = 0; j < cityCount; j++)
+        {
+            if (distances[i][j] == 0 && i != j)
+            {
+                printf("%-15s", "-");
+            }
+            else
+            {
+                printf("%-15d", distances[i][j]);
+            }
+        }
+        printf("\n");
+    }
 }
