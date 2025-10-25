@@ -173,4 +173,43 @@ void removeCity()
     cityCount--;
 }
 
+void renameCity()
+{
+    if (cityCount == 0)
+    {
+        printf("No cities to rename.\n");
+        return;
+    }
+
+    displayCities();
+
+    int index;
+    printf("Enter city number to rename (1-%d): ", cityCount);
+    scanf("%d", &index);
+    getchar();
+
+    if (index < 1 || index > cityCount)
+    {
+        printf("Invalid city number!\n");
+        return;
+    }
+
+    index--;
+
+    char newName[CITY_NAME_LENGTH];
+    printf("Enter new name: ");
+    fgets(newName, CITY_NAME_LENGTH, stdin);
+    newName[strcspn(newName, "\n")] = 0;
+
+    for (int i = 0; i < cityCount; i++)
+    {
+        if (i != index && strcmp(cities[i], newName) == 0)
+        {
+            printf("City name already exists\n");
+        }
+    }
+
+    printf("%s City renamed to %s successfully!\n", cities[index], newName);
+    strcpy(cities[index], newName);
+}
 
