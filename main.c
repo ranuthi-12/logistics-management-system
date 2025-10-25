@@ -213,3 +213,21 @@ void renameCity()
     strcpy(cities[index], newName);
 }
 
+void displayCities()
+{
+    printf("\n==================================\n");
+    printf("               City List            \n");
+    printf("====================================\n");
+
+    if (cityCount == 0)
+    {
+        printf("No cities available.\n");
+    }
+    else
+    {
+        for (int i = 0; i < cityCount; i++)
+        {
+            printf("%d. %s\n", i + 1, cities[i]);
+        }
+    }
+}
