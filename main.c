@@ -573,3 +573,60 @@ void findShortestPath(int source, int destination)
         }
     }
 }
+
+void viewReports()
+{
+    if (deliveryCount == 0)
+    {
+        printf("No deliveries completed yet!\n");
+        return;
+    }
+
+    printf("\n==================================================================\n");
+    printf("                        Performance Reports                           ");
+    printf("\n==================================================================\n");
+
+    float totalDistance = 0;
+    float totalTime = 0;
+    float totalRevenue = 0;
+    float totalProfit = 0;
+    float maxDistance = 0;
+    float minDistance = INFINITY_VALUE;
+    int maxDistanceIndex = 0;
+    int minDistanceIndex = 0;
+
+    for (int i = 0; i < deliveryCount; i++)
+    {
+        totalDistance += deliveryDistance[i];
+        totalTime += deliveryTime[i];
+        totalRevenue += deliveryRevenue[i];
+        totalProfit += deliveryProfit[i];
+
+        if (deliveryDistance[i] > maxDistance)
+        {
+            maxDistance = deliveryDistance[i];
+            maxDistanceIndex = i;
+        }
+        if (deliveryDistance[i] < minDistance)
+        {
+            minDistance = deliveryDistance[i];
+            minDistanceIndex = i;
+        }
+    }
+
+    float avgTime = totalTime / deliveryCount;
+
+    printf("\nSUMMARY STATISTICS\n");
+    printf("  ------------------------------------------------------------\n");
+    printf("  Total Deliveries Completed:     %d\n", deliveryCount);
+    printf("  Total Distance Covered:         %.2f km\n", totalDistance);
+    printf("  Average Delivery Time:          %.2f hours\n", avgTime);
+    printf("  Total Revenue:                  %.2f LKR\n", totalRevenue);
+    printf("  Total Profit:                   %.2f LKR\n", totalProfit);
+    printf("\nROUTE STATISTICS\n");
+    printf("  -------------------------------------------------------------\n");
+    printf("  Longest Route:                  %.2f km\n", maxDistance);
+    printf("    (%s => %s)\n", cities[deliverySource[maxDistanceIndex]], cities[deliveryDestination[maxDistanceIndex]]);
+    printf("  Shortest Route:                 %.2f km\n", minDistance);
+    printf("    (%s => %s)\n", cities[deliverySource[minDistanceIndex]], cities[deliveryDestination[minDistanceIndex]]);
+}
