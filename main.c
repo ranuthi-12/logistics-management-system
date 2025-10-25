@@ -6,6 +6,7 @@
 #define CITY_NAME_LENGTH 50
 #define INFINITY_VALUE 999999
 #define FUEL_PRICE 310.0
+#define MAX_DELIVERIES 50
 
 char cities[MAX_CITIES][CITY_NAME_LENGTH];
 int cityCount = 0;
@@ -39,6 +40,7 @@ void displayCities();
 void editDistance();
 void displayDistanceTable();
 void calculateDeliveryCost(int source, int destination, int weight, int vehicleType);
+void saveDeliveryRecord(int source, int destination, int weight, int vehicleType, float distance, float delivCost, float time, float customerCharge, float profit);
 
 int main()
 {
@@ -452,3 +454,22 @@ void calculateDeliveryCost(int source, int destination, int weight, int vehicleT
     float time = distance / speed;
 }
 
+void saveDeliveryRecord(int source, int destination, int weight, int vehicleType, float distance, float delivCost, float time, float customerCharge, float profit)
+{
+    if (deliveryCount >= MAX_DELIVERIES)
+    {
+        printf("Maximum delivery records reached!\n");
+        deliveryCount = MAX_DELIVERIES - 1;
+    }
+
+    deliverySource[deliveryCount] = source;
+    deliveryDestination[deliveryCount] = destination;
+    deliveryWeight[deliveryCount] = weight;
+    deliveryVehicle[deliveryCount] = vehicleType;
+    deliveryDistance[deliveryCount] = distance;
+    deliveryCost[deliveryCount] = delivCost;
+    deliveryTime[deliveryCount] = time;
+    deliveryRevenue[deliveryCount] = customerCharge;
+    deliveryProfit[deliveryCount] = profit;
+    deliveryCount++;
+}
