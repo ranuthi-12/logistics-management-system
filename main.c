@@ -125,4 +125,52 @@ void addCity()
     printf("%s city added successfully!\n", newCity);
 }
 
+void removeCity()
+{
+    if (cityCount == 0)
+    {
+        printf("No cities to remove.\n");
+        return;
+    }
+
+    displayCities();
+
+    int index;
+    printf("Enter city number to remove (1-%d): ", cityCount);
+    scanf("%d", &index);
+
+    if (index < 1 || index > cityCount)
+    {
+        printf("Invalid city number!\n");
+        return;
+    }
+
+    index--;
+
+    printf("%s city removed successfully!\n", cities[index]);
+
+    for (int i = index; i < cityCount - 1; i++)
+    {
+        strcpy(cities[i], cities[i + 1]);
+    }
+
+    for (int i = 0; i < cityCount - 1; i++)
+    {
+        for (int j = 0; j < cityCount; j++)
+        {
+            distances[i][j] = distances[i + 1][j];
+        }
+    }
+
+    for (int i = 0; i < cityCount; i++)
+    {
+        for (int j = 0; j < cityCount - 1; j++)
+        {
+            distances[i][j] = distances[i][j + 1];
+        }
+    }
+
+    cityCount--;
+}
+
 
