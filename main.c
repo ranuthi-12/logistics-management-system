@@ -41,6 +41,8 @@ void editDistance();
 void displayDistanceTable();
 void calculateDeliveryCost(int source, int destination, int weight, int vehicleType);
 void saveDeliveryRecord(int source, int destination, int weight, int vehicleType, float distance, float delivCost, float time, float customerCharge, float profit);
+void displayDeliveryEstimate(int source, int destination, int weight, int vehicleType, float distance, float deliveryCost,
+                             float fuelUsed, float fuelCost, float totalCost, float profit, float customerCharge, float time);
 
 int main()
 {
@@ -452,6 +454,9 @@ void calculateDeliveryCost(int source, int destination, int weight, int vehicleT
     float profit = deliveryCost * 0.25;
     float customerCharge = totalCost + profit;
     float time = distance / speed;
+
+    displayDeliveryEstimate(source, destination, weight, vehicleType, distance, deliveryCost, fuelUsed, fuelCost, totalCost, profit, customerCharge, time);
+    saveDeliveryRecord(source, destination, weight, vehicleType, distance, deliveryCost, time, customerCharge, profit);
 }
 
 void saveDeliveryRecord(int source, int destination, int weight, int vehicleType, float distance, float delivCost, float time, float customerCharge, float profit)
@@ -472,4 +477,27 @@ void saveDeliveryRecord(int source, int destination, int weight, int vehicleType
     deliveryRevenue[deliveryCount] = customerCharge;
     deliveryProfit[deliveryCount] = profit;
     deliveryCount++;
+}
+
+void displayDeliveryEstimate(int source, int destination, int weight, int vehicleType, float distance, float deliveryCost,
+                             float fuelUsed, float fuelCost, float totalCost, float profit, float customerCharge, float time)
+{
+    printf("\n===================================================\n");
+    printf("                 Delivery Cost Estimation              ");
+    printf("\n----------------------------------------------------\n");
+    printf(" From:              %s\n", cities[source]);
+    printf(" To:                %s\n", cities[destination]);
+    printf(" Minimum Distance:  %.0f km\n", distance);
+    printf(" Vehicle:           %s\n", vehicleNames[vehicleType]);
+    printf(" Weight:            %d kg\n", weight);
+    printf("-------------------------------------------------------\n");
+    printf(" Base Cost:         %.2f x %.0f x (1 + %d/10000.0)\n", distance, vehicleRate[vehicleType], weight);
+    printf("                    = %.2f LKR\n", deliveryCost);
+    printf(" Fuel Used:         %.2f L\n", fuelUsed);
+    printf(" Fuel Cost:          %.2f LKR\n", fuelCost);
+    printf(" Operational Cost:   %.2f LKR\n", totalCost);
+    printf(" Profit:             %.2f LKR\n", profit);
+    printf(" Customer Charge:    %.2f LKR\n", customerCharge);
+    printf(" Estimated Time:     %.2f hours\n", time);
+    printf("\n=====================================================\n");
 }
