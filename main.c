@@ -6,6 +6,10 @@ void manageCities();
 void manageDistances();
 void handleDeliveryRequest();
 void viewReports();
+void addCity();
+void removeCity();
+void renameCity();
+void displayCities();
 
 int main()
 {
@@ -49,4 +53,41 @@ int main()
     } while (choice != 5);
     return 0;
 }
+
+void manageCities()
+{
+    int choice;
+    do
+    {
+        printf("\n======City Management======\n");
+        printf("1. Add new city\n");
+        printf("2. Remove city\n");
+        printf("3. Rename city\n");
+        printf("4. Display all cities\n");
+        printf("5. Back to main menu\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice)
+        {
+        case 1:
+            addCity();
+            break;
+        case 2:
+            removeCity();
+            break;
+        case 3:
+            renameCity();
+            break;
+        case 4:
+            displayCities();
+            break;
+        case 5:
+            return;
+        default:
+            printf("Invalid choice! Please try again.\n");
+        }
+    } while (choice != 5);
+}
+
 
