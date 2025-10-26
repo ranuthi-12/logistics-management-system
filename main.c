@@ -295,7 +295,7 @@ void manageDistances()
         default:
             printf("Invalid choice! Please try again.\n");
         }
-    } while (choice != 5);
+    } while (choice != 3);
 }
 
 void editDistance()
@@ -713,3 +713,4 @@ void saveToFiles() {
         fclose(deliveriesFile);
     }
 }
+
